@@ -117,7 +117,7 @@ export function PersistenceStatus({ className }: PersistenceStatusProps) {
               <Database className="h-4 w-4" />
               持久化状态
             </CardTitle>
-            <CardDescription className="text-xs">TanStack Query 缓存和网络状态</CardDescription>
+            <CardDescription className="text-xs">@qiaopeng/tanstack-query-plus 缓存与网络状态</CardDescription>
           </div>
           <Badge variant={isOnline ? "default" : "destructive"} className="text-xs">
             {isOnline ? (

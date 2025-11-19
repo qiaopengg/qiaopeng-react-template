@@ -1,11 +1,11 @@
 # Smart Review 前端项目
 
-基于 React + TypeScript 的现代前端项目，采用标准化分层架构，集成 TanStack Query 进行服务端状态管理。
+基于 React + TypeScript 的现代前端项目，采用标准化分层架构，集成 `@qiaopeng/tanstack-query-plus` 进行服务端状态管理与增强能力。
 
 ## 技术栈
 
 - **框架**：React 19 + TypeScript 5 + Vite 6
-- **状态管理**：TanStack Query 5（服务端状态与缓存）
+- **状态管理**：`@qiaopeng/tanstack-query-plus`（基于 TanStack Query 的增强封装）
 - **UI 组件**：shadcn/ui + Radix UI（无障碍基础组件）
 - **样式**：Tailwind CSS 4
 - **表单**：React Hook Form + Zod
@@ -58,7 +58,7 @@ src/pages/indicator-management/
 
 | 层级 | 职责 | 示例 |
 |------|------|------|
-| **api/** | 封装 HTTP 请求，定义 TanStack Query Options | `useIndicatorListQuery` |
+| **api/** | 封装 HTTP 请求，定义查询 Options（tanstack-query-plus） | `useIndicatorListQuery` |
 | **hooks/** | 业务逻辑、状态管理、数据转换 | `useIndicatorManagementPage` |
 | **components/** | 可复用的业务组件，纯 UI 渲染 | `IndicatorForm` |
 | **types/** | TypeScript 类型定义 | `IIndicatorItem` |
@@ -72,56 +72,96 @@ src/pages/indicator-management/
 - **类型文件**：按功能命名（`list.ts`、`form.ts`）
 - **组件文件**：PascalCase（`FormComponent.tsx`）
 
-## TanStack Query 文件层级
+## 查询与状态管理
 
-### 模块内的 TanStack Query 组织
+### 使用 `@qiaopeng/tanstack-query-plus`
 
 ```
 src/pages/indicator-management/
-├── api/                           # TanStack Query 层
-│   ├── list.ts                   # 列表相关
-│   │   ├── getIndicatorList()    # API 函数
-│   │   ├── useIndicatorListQuery() # Query Hook
-│   │   ├── useDeleteIndicatorMutation() # Mutation Hook
-│   │   └── listQueryOptions      # Query Options 配置
-│   ├── form.ts                   # 表单相关
-│   │   ├── getIndicatorDetail()  # API 函数
-│   │   ├── useIndicatorDetailQuery() # Query Hook
-│   │   ├── useAddIndicatorMutation() # Mutation Hook
-│   │   └── formQueryOptions      # Query Options 配置
+├── api/
+│   ├── list.ts                   # 列表相关 Query/Mutation（使用 plus 的 hooks）
+│   ├── form.ts                   # 表单相关 Query/Mutation（带乐观更新工具）
 │   └── index.ts                  # 统一导出
-├── shared/                        # Query Keys 管理
-│   └── index.ts
-│       ├── indicatorKeys         # Query Keys 定义
-│       └── indicatorMutationKeys # Mutation Keys 定义
-└── hooks/                         # 业务逻辑层（使用 Query Hooks）
-    ├── useList.ts                # 调用 useIndicatorListQuery
-    └── useForm.ts                # 调用 useIndicatorDetailQuery
+├── shared/
+│   └── index.ts                  # 使用 `queryKeys` 与 `createQueryKeyFactory`
+└── hooks/
+    ├── useList.ts                # 业务逻辑，调用 API hooks 与常量
+    └── useForm.ts                # 业务逻辑，使用 `useSmartPrefetch`
 ```
 
-### 文件职责说明
+### 核心用法示例
 
-**api/list.ts - 列表相关 Query**
-- 定义 API 函数（如 `getIndicatorList`）
-- 导出 Query Hooks（如 `useIndicatorListQuery`）
-- 导出 Mutation Hooks（如 `useDeleteIndicatorMutation`）
-- 配置乐观更新逻辑
+**Provider 与环境配置**
 
-**api/form.ts - 表单相关 Query**
-- 定义 API 函数（如 `getIndicatorDetail`、`createIndicator`）
-- 导出 Query Hooks（如 `useIndicatorDetailQuery`）
-- 导出 Mutation Hooks（如 `useAddIndicatorMutation`）
-- 配置乐观更新逻辑
+```tsx
+// src/main.tsx
+import { QueryClient } from "@tanstack/react-query";
+import { PersistQueryClientProvider } from "@qiaopeng/tanstack-query-plus";
+import { setupFocusManager } from "@qiaopeng/tanstack-query-plus/core";
+import { getConfigByEnvironment } from "@qiaopeng/tanstack-query-plus/core/config";
 
-**shared/index.ts - Query Keys 管理**
-- 定义 Query Keys 层级结构
-- 定义 Mutation Keys
-- 确保 Query Keys 的唯一性和可维护性
+const queryClient = new QueryClient({
+  defaultOptions: getConfigByEnvironment(import.meta.env.MODE as "development" | "production" | "test")
+});
 
-**hooks/ - 业务逻辑层**
-- 调用 api/ 中的 Query Hooks
-- 处理业务逻辑和状态管理
-- 不直接调用 HTTP 请求
+setupFocusManager();
+
+<PersistQueryClientProvider client={queryClient} cacheKey="tanstack-query-cache" enablePersistence enableOfflineSupport>
+  {/* app */}
+</PersistQueryClientProvider>
+```
+
+**Query Keys 与 Options**
+
+```ts
+// src/pages/indicator-management/shared/index.ts
+import { TIME_CONSTANTS } from "@qiaopeng/tanstack-query-plus/core/config";
+import { queryKeys } from "@qiaopeng/tanstack-query-plus/core/keys";
+import { createAppQueryOptions } from "@qiaopeng/tanstack-query-plus/core/queryOptions";
+import { createQueryKeyFactory } from "@qiaopeng/tanstack-query-plus/utils/queryKey";
+
+export const indicatorKeys = {
+  ...createQueryKeyFactory({ namespace: "indicator" }),
+  formConfig: () => [...queryKeys.all, "indicator", "formConfig"] as const
+};
+
+export function formConfigQueryOptions() {
+  return createAppQueryOptions({
+    queryKey: indicatorKeys.formConfig(),
+    queryFn: async () => {/* ... */},
+    staleTime: TIME_CONSTANTS.THIRTY_MINUTES,
+    gcTime: TIME_CONSTANTS.ONE_HOUR
+  });
+}
+```
+
+**Mutation 与乐观更新**
+
+```ts
+import { useMutation } from "@qiaopeng/tanstack-query-plus/hooks/useMutation";
+import { createOptimisticBase } from "@qiaopeng/tanstack-query-plus/utils";
+
+export function useDeleteMutation(params?: any) {
+  return useMutation<void, Error, string>({
+    mutationKey: ["indicator", "delete"],
+    mutationFn: async (id) => {/* ... */},
+    optimistic: {
+      queryKey: ["indicator", "list", params],
+      updater: (old, id) => {/* ... */},
+      enabled: true
+    }
+  });
+}
+```
+
+**智能预取与组件懒加载**
+
+```ts
+import { useSmartPrefetch } from "@qiaopeng/tanstack-query-plus/hooks/usePrefetch";
+
+const { prefetch, shouldPrefetch } = useSmartPrefetch();
+// 在 hover/focus 时按策略预取数据与懒加载组件
+```
 
 ## 代码规范
 

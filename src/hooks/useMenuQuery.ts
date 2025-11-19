@@ -1,4 +1,4 @@
-// 菜单查询 Hook - 使用重构后的 TanStack Query 工具
+// 菜单查询 Hook - 使用 @qiaopeng/tanstack-query-plus 工具
 // 职责：提供菜单数据查询功能
 
 import type { MenuItem } from "@/service/menu";

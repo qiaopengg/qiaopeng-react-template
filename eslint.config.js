@@ -45,7 +45,7 @@ export default antfu(
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": "off",
       "react-hooks/incompatible-library": "off",
-      // TanStack Query ESLint 规则
+      // Query 相关 ESLint 规则（@tanstack）
       "@tanstack/query/exhaustive-deps": "warn",
       "@tanstack/query/stable-query-client": "error",
       "@tanstack/query/no-rest-destructuring": "warn",

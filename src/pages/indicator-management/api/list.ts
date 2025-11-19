@@ -30,7 +30,7 @@ async function toggleIndicatorStatus(params: { id: string; status: number }): Pr
   });
 }
 
-// ==================== React Query Hooks（列表） ====================
+// ==================== 查询 Hooks（@qiaopeng/tanstack-query-plus） ====================
 
 /** 列表 Suspense 查询 Hook */
 export function useListSuspenseQuery(params?: IIndicatorQueryParams, options?: any) {

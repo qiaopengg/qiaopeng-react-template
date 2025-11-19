@@ -38,7 +38,7 @@ function generateRequestKey(config: InternalAxiosRequestConfig): string {
 
 /**
  * 添加请求到 pending 队列
- * 智能去重：只在短时间窗口内取消重复请求，避免影响 React Query 重试机制
+ * 智能去重：只在短时间窗口内取消重复请求，避免影响查询库重试机制（@qiaopeng/tanstack-query-plus）
  */
 function addPendingRequest(config: InternalAxiosRequestConfig) {
   // 如果配置了跳过去重检查，直接返回

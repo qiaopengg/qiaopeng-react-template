@@ -18,7 +18,7 @@ async function updateIndicator(data: IIndicatorEditParams): Promise<IIndicatorIt
   return http.put<IIndicatorItem>("/indicator-management/update-with-attributes", data);
 }
 
-// ==================== React Query Hooks（表单/详情） ====================
+// ==================== 查询 Hooks（@qiaopeng/tanstack-query-plus） ====================
 
 /** 创建 Mutation Hook */
 export function useAddMutation(params?: IIndicatorQueryParams) {

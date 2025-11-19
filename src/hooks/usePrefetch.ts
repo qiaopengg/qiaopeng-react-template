@@ -13,7 +13,7 @@ import { useRef, useState } from "react";
 export interface PrefetchConfig {
   /**
    * 单个查询配置
-   * 与 React Query 的 queryOptions 兼容
+   * 与 @qiaopeng/tanstack-query-plus 的 queryOptions 兼容
    */
   queryOptions?: any;
 

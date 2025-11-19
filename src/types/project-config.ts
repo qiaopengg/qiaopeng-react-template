@@ -126,7 +126,7 @@ export interface IProjectConfigService {
 
 /**
  * 项目配置查询钩子选项
- * 用于配置TanStack Query的缓存策略
+ * 用于配置 @qiaopeng/tanstack-query-plus 的缓存策略
  */
 export interface IProjectConfigQueryOptions {
   /** 数据新鲜时间（毫秒） */
