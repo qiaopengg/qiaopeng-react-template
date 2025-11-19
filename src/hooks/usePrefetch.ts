@@ -4,7 +4,7 @@
  * 用于预取数据和懒加载组件，提升用户体验
  */
 
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@qiaopeng/tanstack-query-plus";
 import { useRef, useState } from "react";
 
 /**

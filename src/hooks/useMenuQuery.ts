@@ -3,9 +3,9 @@
 
 import type { MenuItem } from "@/service/menu";
 
-import { useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/lib/tanstackQuery/core/keys";
-import { useEnhancedQuery } from "@/lib/tanstackQuery/hooks";
+import { useQueryClient } from "@qiaopeng/tanstack-query-plus";
+import { queryKeys } from "@qiaopeng/tanstack-query-plus/core";
+import { useEnhancedQuery } from "@qiaopeng/tanstack-query-plus/hooks";
 import { getTree } from "@/service/menu";
 
 /**

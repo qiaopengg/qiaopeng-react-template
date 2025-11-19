@@ -4,7 +4,7 @@
  * 核心功能：将 ID 字段转换为对应的名称字段
  */
 
-import { createFieldEnricher } from "@/lib/tanstackQuery/utils";
+import { createFieldEnricher } from "@qiaopeng/tanstack-query-plus/utils";
 import { indicatorKeys } from "../shared";
 
 /**

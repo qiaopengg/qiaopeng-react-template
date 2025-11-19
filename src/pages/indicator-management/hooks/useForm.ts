@@ -2,11 +2,11 @@ import type { IIndicatorAddParams, IIndicatorEditParams, IIndicatorItem, Indicat
 import type { SelectOption as TreeSelectOption } from "@/types/project-config";
 import type { UISelectOption } from "@/types/select";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSmartPrefetch } from "@qiaopeng/tanstack-query-plus/hooks";
 import { useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useSmartPrefetch } from "@/lib/tanstackQuery/hooks/usePrefetch";
 import { joinIfArray, splitToArray } from "@/lib/utils";
 import { useAddMutation, useEditMutation } from "../api";
 import { useFormAllConfigOptionsQuery } from "../shared";

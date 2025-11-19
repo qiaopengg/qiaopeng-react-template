@@ -1,6 +1,7 @@
 import type { IIndicatorItem, IIndicatorQueryParams } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
+import { TIME_CONSTANTS } from "@qiaopeng/tanstack-query-plus/core";
+import { useEnhancedQuery } from "@qiaopeng/tanstack-query-plus/hooks";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -8,7 +9,6 @@ import { z } from "zod";
 import { IndicatorStatus } from "@/constants/indicator";
 import { createPrefetchedActions, createPrefetchHandlers, usePrefetch } from "@/hooks/usePrefetch";
 import { useQueryParams } from "@/hooks/useQueryParams";
-import { TIME_CONSTANTS } from "@/lib/tanstackQuery/core/config";
 import { projectConfigService } from "@/service/project-config";
 import { useDeleteMutation, useToggleStatusMutation } from "../api";
 import { formConfigQueryOptions } from "../shared";
@@ -59,7 +59,7 @@ export function useSearchForm(
   });
 
   // 获取搜索配置数据
-  const { data: searchConfigData } = useQuery({
+  const { data: searchConfigData } = useEnhancedQuery({
     queryKey: ["project-config", "project-type,design-phases"],
     queryFn: () => projectConfigService.getProjectConfig({ configTypes: "project-type,design-phases" }),
     staleTime: TIME_CONSTANTS.THIRTY_MINUTES,
@@ -192,7 +192,7 @@ export function useFormPrefetch(handleAdd: () => void, handleEdit: (item: IIndic
   const { prefetch: prefetchForm } = usePrefetch({
     queryOptions: formConfigQueryOptions(),
     componentImport: () => import("../components/Form"),
-    once: true
+    once: false
   });
 
   // 创建预取增强的操作函数

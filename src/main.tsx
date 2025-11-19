@@ -1,12 +1,9 @@
-import { QueryClient } from "@tanstack/react-query";
+import { PersistQueryClientProvider, QueryClient } from "@qiaopeng/tanstack-query-plus";
+import { getConfigByEnvironment, setupFocusManager } from "@qiaopeng/tanstack-query-plus/core";
 import { ThemeProvider } from "next-themes";
 import { lazy, StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router";
-import { PersistQueryClientProvider } from "@/lib/tanstackQuery";
-
-import { setupFocusManager } from "@/lib/tanstackQuery/core";
-import { getConfigByEnvironment } from "@/lib/tanstackQuery/core/config";
 import { router } from "./router";
 import "./index.css";
 import "./config/env";

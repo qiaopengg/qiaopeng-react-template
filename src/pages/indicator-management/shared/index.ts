@@ -1,10 +1,8 @@
-import type { UseQueryOptions } from "@tanstack/react-query";
+// decouple types from react-query
 import type { FormAllConfigOptionsResponse, IIndicatorQueryParams } from "../types";
-import { useQuery } from "@tanstack/react-query";
-import { TIME_CONSTANTS } from "@/lib/tanstackQuery/core/config";
-import { queryKeys } from "@/lib/tanstackQuery/core/keys";
-import { createAppQueryOptions } from "@/lib/tanstackQuery/core/queryOptions";
-import { createQueryKeyFactory } from "@/lib/tanstackQuery/utils/queryKey";
+import { createAppQueryOptions, queryKeys, TIME_CONSTANTS } from "@qiaopeng/tanstack-query-plus/core";
+import { useEnhancedQuery } from "@qiaopeng/tanstack-query-plus/hooks";
+import { createQueryKeyFactory } from "@qiaopeng/tanstack-query-plus/utils";
 
 // 统一的查询键工厂（使用通用工具）
 const baseIndicatorKeys = createQueryKeyFactory<IIndicatorQueryParams>({
@@ -67,10 +65,8 @@ export function formConfigQueryOptions() {
 }
 
 // 共享的 Hook：表单配置查询
-export function useFormAllConfigOptionsQuery(
-  options?: Partial<Omit<UseQueryOptions<FormAllConfigOptionsResponse, Error>, "queryKey" | "queryFn">>
-) {
-  return useQuery({
+export function useFormAllConfigOptionsQuery(options?: any) {
+  return useEnhancedQuery<FormAllConfigOptionsResponse, Error, FormAllConfigOptionsResponse, any>({
     ...formConfigQueryOptions(),
     ...options
   });

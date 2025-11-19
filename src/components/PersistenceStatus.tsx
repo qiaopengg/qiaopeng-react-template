@@ -1,4 +1,4 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@qiaopeng/tanstack-query-plus";
 import { AlertTriangle, Database, HardDrive, Network, RefreshCw, Trash2, Wifi, WifiOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";

@@ -22,8 +22,8 @@
  * ```
  */
 
-import { useIsMutating } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { useIsMutatingPlus as useIsMutating } from "../hooks/useIsMutatingPlus";
 
 export function GlobalMutationLoading() {
   const mutatingCount = useIsMutating();

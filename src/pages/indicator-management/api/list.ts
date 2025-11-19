@@ -1,9 +1,8 @@
-import type { UseQueryOptions } from "@tanstack/react-query";
+// decouple types from react-query
 import type { IIndicatorPageResponse, IIndicatorQueryParams } from "../types";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { TIME_CONSTANTS } from "@qiaopeng/tanstack-query-plus/core";
+import { useEnhancedSuspenseQuery, useMutation } from "@qiaopeng/tanstack-query-plus/hooks";
 import { http } from "@/lib/http";
-import { TIME_CONSTANTS } from "@/lib/tanstackQuery/core/config";
-import { useMutation } from "@/lib/tanstackQuery/hooks/useMutation";
 import { indicatorKeys, indicatorMutationKeys } from "../shared";
 
 // ==================== 列表相关 API ====================
@@ -34,11 +33,8 @@ async function toggleIndicatorStatus(params: { id: string; status: number }): Pr
 // ==================== React Query Hooks（列表） ====================
 
 /** 列表 Suspense 查询 Hook */
-export function useListSuspenseQuery(
-  params?: IIndicatorQueryParams,
-  options?: Partial<Omit<UseQueryOptions<IIndicatorPageResponse, Error>, "queryKey" | "queryFn">>
-) {
-  return useSuspenseQuery({
+export function useListSuspenseQuery(params?: IIndicatorQueryParams, options?: any) {
+  return useEnhancedSuspenseQuery<IIndicatorPageResponse, Error, IIndicatorPageResponse, any>({
     queryKey: indicatorKeys.list(params),
     queryFn: () => getIndicatorList(params || {}),
     staleTime: TIME_CONSTANTS.FIVE_MINUTES, // 5分钟内从缓存读取

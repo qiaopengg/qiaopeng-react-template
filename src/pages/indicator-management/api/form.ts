@@ -1,8 +1,8 @@
 import type { IIndicatorAddParams, IIndicatorEditParams, IIndicatorItem, IIndicatorQueryParams } from "../types";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@qiaopeng/tanstack-query-plus";
+import { useMutation } from "@qiaopeng/tanstack-query-plus/hooks";
+import { createOptimisticBase, createTempId } from "@qiaopeng/tanstack-query-plus/utils";
 import { http } from "@/lib/http";
-import { useMutation } from "@/lib/tanstackQuery/hooks/useMutation";
-import { createOptimisticBase, createTempId } from "@/lib/tanstackQuery/utils";
 import { enrichNameFields } from "../hooks";
 import { indicatorKeys, indicatorMutationKeys } from "../shared";
 
