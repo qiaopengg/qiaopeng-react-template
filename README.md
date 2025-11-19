@@ -95,7 +95,7 @@ src/pages/indicator-management/
 
 ```tsx
 // src/main.tsx
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient } from "@qiaopeng/tanstack-query-plus";
 import { PersistQueryClientProvider } from "@qiaopeng/tanstack-query-plus";
 import { setupFocusManager } from "@qiaopeng/tanstack-query-plus/core";
 import { getConfigByEnvironment } from "@qiaopeng/tanstack-query-plus/core/config";
