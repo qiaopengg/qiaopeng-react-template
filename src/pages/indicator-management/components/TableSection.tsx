@@ -14,7 +14,7 @@ function TableSkeleton({ rows = 5 }: { rows?: number }) {
       columnWidths={["flex-1", "w-20"]}
       showHeader={true}
       headerHeight="h-14"
-      rowHeight="h-18"
+      rowHeight="h-[4.5rem]"
     />
   );
 }

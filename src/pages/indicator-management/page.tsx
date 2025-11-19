@@ -1,6 +1,6 @@
 import { ConfirmDialog } from "@/components/common";
 import { Drawer, SearchBar, TableSection } from "./components";
-import { useVM } from "./hooks/useVM";
+import { useVM } from "./hooks";
 
 /**
  * 指标管理页面

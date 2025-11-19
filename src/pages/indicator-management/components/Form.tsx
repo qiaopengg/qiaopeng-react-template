@@ -170,7 +170,7 @@ export function IndicatorForm({ onClose, initialData }: { onClose?: () => void; 
                 )}
               </LabeledField>
 
-              <div className="flex flex-row items-center justify-between">
+              <div className="flex items-center justify-between">
                 <ToggleField control={form.control} name="intermediateResult" label="是否为中间结果（前端不显示）" />
 
                 <ToggleField control={form.control} name="enableStatus" label="是否启用" />
