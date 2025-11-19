@@ -1,4 +1,4 @@
-# Smart Review 前端项目
+# React Template 前端项目
 
 基于 React + TypeScript 的现代前端项目，采用标准化分层架构，集成 `@qiaopeng/tanstack-query-plus` 进行服务端状态管理与增强能力。
 
