@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+set -e
+
+# 确保 node 环境加载（可选）
+if command -v fnm >/dev/null 2>&1; then
+  eval "$(fnm env)"
+fi
+
+if [ -n "$1" ]; then
+  cat "$1" | npx --no commitlint
+else
+  git log -1 --pretty=%B | npx --no commitlint
+fi

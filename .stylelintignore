@@ -1,0 +1,21 @@
+# 构建输出目录
+dist/
+build/
+
+# 依赖包
+node_modules/
+
+# 缓存目录
+.vite/
+.cache/
+
+# 临时文件
+*.tmp
+*.temp
+
+# IDE 和编辑器生成的文件
+.vscode/
+.idea/
+
+# 其他不需要检查的文件
+public/ 

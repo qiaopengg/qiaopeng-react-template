@@ -1,0 +1,29 @@
+# 依赖
+node_modules
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# 构建产物
+dist
+build
+.next
+.nuxt
+.output
+.vite
+coverage
+
+# 缓存
+.cache
+.temp
+.tmp
+*.log
+
+# 配置文件
+.husky
+.vscode
+.idea
+
+# 其他
+*.md
+public
