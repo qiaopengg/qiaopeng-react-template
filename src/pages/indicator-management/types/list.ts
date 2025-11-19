@@ -65,3 +65,5 @@ export interface IIndicatorQueryParams extends Record<string, unknown> {
   projectTypeId?: string;
   designPhaseId?: string;
 }
+
+export type SearchFormValues = Pick<IIndicatorQueryParams, "projectTypeId" | "designPhaseId">;

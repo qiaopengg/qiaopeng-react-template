@@ -1,4 +1,4 @@
-import type { IIndicatorItem, IIndicatorQueryParams } from "../types";
+import type { IIndicatorItem, IIndicatorQueryParams, SearchFormValues } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TIME_CONSTANTS } from "@qiaopeng/tanstack-query-plus/core";
 import { useEnhancedQuery } from "@qiaopeng/tanstack-query-plus/hooks";
@@ -21,7 +21,6 @@ const searchFormSchema = z.object({
   designPhaseId: z.string().optional()
 });
 
-export type SearchFormValues = z.infer<typeof searchFormSchema>;
 
 /**
  * 查询参数 Hook

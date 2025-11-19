@@ -1,5 +1,5 @@
 import type { UseFormReturn } from "react-hook-form";
-import type { SearchFormValues } from "../hooks/useList";
+import type { SearchFormValues } from "../types";
 import type { UISelectOption } from "@/types/select";
 import { Search } from "lucide-react";
 import { SelectField } from "@/components/form-fields";
