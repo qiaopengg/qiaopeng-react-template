@@ -58,7 +58,7 @@ export function useDeleteMutation(params?: IIndicatorQueryParams) {
         return {
           ...typedOldData,
           Rows: typedOldData.Rows.filter((item) => item.id !== itemId),
-          Total: typedOldData.Total - 1
+          Total: Math.max(0, (typedOldData.Total || 0) - 1)
         } as TQueryData;
       },
       enabled: true,

@@ -1,5 +1,6 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import type { IIndicatorItem, IIndicatorQueryParams } from "../types";
+import { QueryErrorBoundary } from "@qiaopeng/tanstack-query-plus/components";
 import { Suspense } from "react";
 import { DataTable } from "@/components/Table/Data-table";
 import { ElegantTableSkeleton } from "@/components/ui/elegant-table-skeleton";
@@ -46,9 +47,21 @@ export function TableSection({ queryParams, columns }: TableSectionProps) {
   return (
     <div className="flex-1 min-h-0 overflow-hidden p-4 bg-card">
       <div className="h-full overflow-hidden">
-        <Suspense fallback={<TableSkeleton />}>
-          <ListContent queryParams={queryParams} columns={columns} />
-        </Suspense>
+        <QueryErrorBoundary
+          fallback={(error, reset) => (
+            <div className="p-4">
+              <div className="mb-2">加载列表失败：{error.message}</div>
+              <button onClick={reset} className="px-3 py-1">
+                重试
+              </button>
+            </div>
+          )}
+          resetKeys={[JSON.stringify(queryParams)]}
+        >
+          <Suspense fallback={<TableSkeleton />}>
+            <ListContent queryParams={queryParams} columns={columns} />
+          </Suspense>
+        </QueryErrorBoundary>
       </div>
     </div>
   );

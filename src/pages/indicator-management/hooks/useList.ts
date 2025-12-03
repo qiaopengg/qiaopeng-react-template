@@ -211,7 +211,8 @@ export function useFormPrefetch(handleAdd: () => void, handleEdit: (item: IIndic
     () =>
       createPrefetchHandlers(prefetchForm, {
         onHover: true,
-        onFocus: true
+        onFocus: true,
+        delay: 200
       }),
     [prefetchForm]
   );

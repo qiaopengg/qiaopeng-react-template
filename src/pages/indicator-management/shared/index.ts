@@ -1,6 +1,11 @@
 // decouple types from react-query
 import type { FormAllConfigOptionsResponse, IIndicatorQueryParams } from "../types";
-import { createAppQueryOptions, queryKeys, TIME_CONSTANTS } from "@qiaopeng/tanstack-query-plus/core";
+import {
+  createAppQueryOptions,
+  createMutationKeyFactory,
+  queryKeys,
+  TIME_CONSTANTS
+} from "@qiaopeng/tanstack-query-plus/core";
 import { useEnhancedQuery } from "@qiaopeng/tanstack-query-plus/hooks";
 import { createQueryKeyFactory } from "@qiaopeng/tanstack-query-plus/utils";
 
@@ -23,10 +28,10 @@ export const indicatorKeys = {
 };
 
 // 统一的 Mutation 键工厂（共享）
+const indicatorMutationBase = createMutationKeyFactory("indicator");
 export const indicatorMutationKeys = {
-  add: () => ["indicator", "add"] as const,
-  update: (id?: string) => (id ? (["indicator", "update", id] as const) : (["indicator", "update"] as const)),
-  delete: (id?: string) => (id ? (["indicator", "delete", id] as const) : (["indicator", "delete"] as const)),
+  ...indicatorMutationBase,
+  add: () => indicatorMutationBase.create(),
   toggleStatus: (id?: string) =>
     id ? (["indicator", "toggleStatus", id] as const) : (["indicator", "toggleStatus"] as const)
 };

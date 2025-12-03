@@ -846,10 +846,10 @@
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.9.tgz#d229a7b7f9dac167a156992ef23c7f023653f53b"
   integrity sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==
 
-"@qiaopeng/tanstack-query-plus@^0.1.2":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@qiaopeng/tanstack-query-plus/-/tanstack-query-plus-0.1.4.tgz#9ccd219ea3b071641ed19d87768e25867df7c5c3"
-  integrity sha512-f+s2sLHr3I1wZeLW5PqhYt3fb+DXmFpU25b3dubYjdeyyvPCjzR/BX1EXpAIsVBNTdx4fcr3TtCykUp6K4Kq8A==
+"@qiaopeng/tanstack-query-plus@^0.5.0":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@qiaopeng/tanstack-query-plus/-/tanstack-query-plus-0.5.2.tgz#86a07e715c72eb925b4299a3acea4591ff3745a0"
+  integrity sha512-2szSsKReV5gka2Pyc4vxrcEreQbxDjjLAiAE6srCyVwueQKOp5s6gappHSbjsPwyIggQAh3xPSSE/7Q/KmiQsg==
 
 "@radix-ui/number@1.1.1":
   version "1.1.1"

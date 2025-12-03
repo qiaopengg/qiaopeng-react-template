@@ -15,11 +15,12 @@ export function useIsMutatingPlus(options?: UseIsMutatingOptions): number {
     const cache: any = queryClient.getMutationCache();
     const update = () => {
       const all: any[] = cache.getAll();
+      const pending = all.filter((m) => m?.state?.status === "pending");
       if (!hasKey) {
-        setCount(all.length);
+        setCount(pending.length);
         return;
       }
-      const filtered = all.filter((m) => {
+      const filtered = pending.filter((m) => {
         const mk = m?.options?.mutationKey;
         try {
           return JSON.stringify(mk) === keyJson;
