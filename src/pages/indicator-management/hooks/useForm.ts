@@ -3,13 +3,13 @@ import type { SelectOption as TreeSelectOption } from "@/types/project-config";
 import type { UISelectOption } from "@/types/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSmartPrefetch } from "@qiaopeng/tanstack-query-plus/hooks";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { joinIfArray, splitToArray } from "@/lib/utils";
 import { useAddMutation, useEditMutation } from "../api";
-import { useFormAllConfigOptionsQuery } from "../shared";
+import { projectConfigQueryOptions, useFormAllConfigOptionsQuery } from "../shared";
 import { useParams } from "./useList";
 
 // ==================== 表单验证 Schema ====================
@@ -56,22 +56,18 @@ export function useFormVM(initialData?: IIndicatorItem | null, onClose?: () => v
 
   useEffect(() => {
     if (shouldPrefetch && formAllConfigData) {
-      prefetch(
-        ["project-config", "project-type,design-phases"],
-        async () => {
-          const { projectConfigService } = await import("@/service/project-config");
-          return projectConfigService.getProjectConfig({ configTypes: "project-type,design-phases" });
-        },
-        { staleTime: 30 * 60 * 1000 }
-      );
+      const options = projectConfigQueryOptions();
+      if (typeof options.queryFn === "function") {
+        prefetch(options.queryKey, options.queryFn, {
+          staleTime: options.staleTime as number
+        });
+      }
     }
   }, [shouldPrefetch, formAllConfigData, prefetch]);
 
   const { params } = useParams();
-  const queryParams = useMemo(
-    () => ({ currentPage: params.currentPage, pageSize: params.pageSize }),
-    [params.currentPage, params.pageSize]
-  );
+  // 直接使用完整的 params，确保乐观更新能匹配到当前带有筛选条件的列表 QueryKey
+  const queryParams = params;
 
   const addMutation = useAddMutation(queryParams);
   const editMutation = useEditMutation(queryParams);

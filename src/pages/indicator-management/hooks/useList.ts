@@ -1,6 +1,5 @@
 import type { IIndicatorItem, IIndicatorQueryParams, SearchFormValues } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TIME_CONSTANTS } from "@qiaopeng/tanstack-query-plus/core";
 import { useEnhancedQuery } from "@qiaopeng/tanstack-query-plus/hooks";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -9,9 +8,8 @@ import { z } from "zod";
 import { IndicatorStatus } from "@/constants/indicator";
 import { createPrefetchedActions, createPrefetchHandlers, usePrefetch } from "@/hooks/usePrefetch";
 import { useQueryParams } from "@/hooks/useQueryParams";
-import { projectConfigService } from "@/service/project-config";
 import { useDeleteMutation, useToggleStatusMutation } from "../api";
-import { formConfigQueryOptions } from "../shared";
+import { formConfigQueryOptions, projectConfigQueryOptions } from "../shared";
 
 // ==================== 搜索表单相关 ====================
 
@@ -57,12 +55,7 @@ export function useSearchForm(
   });
 
   // 获取搜索配置数据
-  const { data: searchConfigData } = useEnhancedQuery({
-    queryKey: ["project-config", "project-type,design-phases"],
-    queryFn: () => projectConfigService.getProjectConfig({ configTypes: "project-type,design-phases" }),
-    staleTime: TIME_CONSTANTS.THIRTY_MINUTES,
-    gcTime: TIME_CONSTANTS.ONE_HOUR
-  });
+  const { data: searchConfigData } = useEnhancedQuery(projectConfigQueryOptions());
 
   // 转换为选项格式
   const projectTypeOptions = searchConfigData?.["project-type"] || [];

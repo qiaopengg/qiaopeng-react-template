@@ -33,13 +33,12 @@ async function toggleIndicatorStatus(params: { id: string; status: number }): Pr
 // ==================== 查询 Hooks（@qiaopeng/tanstack-query-plus） ====================
 
 /** 列表 Suspense 查询 Hook */
-export function useListSuspenseQuery(params?: IIndicatorQueryParams, options?: any) {
-  return useEnhancedSuspenseQuery<IIndicatorPageResponse, Error, IIndicatorPageResponse, any>({
+export function useListSuspenseQuery(params?: IIndicatorQueryParams) {
+  return useEnhancedSuspenseQuery<IIndicatorPageResponse, Error>({
     queryKey: indicatorKeys.list(params),
     queryFn: () => getIndicatorList(params || {}),
     staleTime: TIME_CONSTANTS.FIVE_MINUTES, // 5分钟内从缓存读取
-    gcTime: TIME_CONSTANTS.TEN_MINUTES, // 10分钟后清理缓存
-    ...options
+    gcTime: TIME_CONSTANTS.TEN_MINUTES // 10分钟后清理缓存
   });
 }
 
@@ -53,13 +52,13 @@ export function useDeleteMutation(params?: IIndicatorQueryParams) {
     optimistic: {
       queryKey: indicatorKeys.list(queryParams),
       updater: <TQueryData = IIndicatorPageResponse>(oldData: TQueryData | undefined, itemId: string) => {
-        const typedOldData = oldData as IIndicatorPageResponse | undefined;
+        const typedOldData = oldData as unknown as IIndicatorPageResponse | undefined;
         if (!typedOldData) return oldData;
         return {
           ...typedOldData,
           Rows: typedOldData.Rows.filter((item) => item.id !== itemId),
           Total: Math.max(0, (typedOldData.Total || 0) - 1)
-        } as TQueryData;
+        } as unknown as TQueryData;
       },
       enabled: true,
       rollback: (_previousData, error) => {
@@ -82,14 +81,14 @@ export function useToggleStatusMutation(params?: IIndicatorQueryParams) {
         oldData: TQueryData | undefined,
         variables: { id: string; status: number }
       ) => {
-        const typedOldData = oldData as IIndicatorPageResponse | undefined;
+        const typedOldData = oldData as unknown as IIndicatorPageResponse | undefined;
         if (!typedOldData) return oldData;
         return {
           ...typedOldData,
           Rows: typedOldData.Rows.map((item) =>
             item.id === variables.id ? { ...item, enableStatus: variables.status } : item
           )
-        } as TQueryData;
+        } as unknown as TQueryData;
       },
       enabled: true,
       rollback: (_previousData, error) => {

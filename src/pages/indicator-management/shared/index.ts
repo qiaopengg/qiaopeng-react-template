@@ -1,5 +1,6 @@
 // decouple types from react-query
 import type { FormAllConfigOptionsResponse, IIndicatorQueryParams } from "../types";
+import type { IProjectConfigResponse } from "@/types/project-config";
 import {
   createAppQueryOptions,
   createMutationKeyFactory,
@@ -24,7 +25,9 @@ const baseIndicatorKeys = createQueryKeyFactory<IIndicatorQueryParams>({
 export const indicatorKeys = {
   ...baseIndicatorKeys,
   // 添加表单配置的特殊 key
-  formConfig: () => [...queryKeys.all, "indicator", "formConfig"] as const
+  formConfig: () => [...queryKeys.all, "indicator", "formConfig"] as const,
+  // 添加项目配置的特殊 key
+  projectConfig: () => ["project-config", "project-type,design-phases"] as const
 };
 
 // 统一的 Mutation 键工厂（共享）
@@ -70,9 +73,21 @@ export function formConfigQueryOptions() {
 }
 
 // 共享的 Hook：表单配置查询
-export function useFormAllConfigOptionsQuery(options?: any) {
-  return useEnhancedQuery<FormAllConfigOptionsResponse, Error, FormAllConfigOptionsResponse, any>({
-    ...formConfigQueryOptions(),
-    ...options
+export function useFormAllConfigOptionsQuery() {
+  return useEnhancedQuery<FormAllConfigOptionsResponse, Error, FormAllConfigOptionsResponse>({
+    ...formConfigQueryOptions()
+  });
+}
+
+// 共享的 QueryOptions：项目配置（搜索表单用）
+export function projectConfigQueryOptions() {
+  return createAppQueryOptions<IProjectConfigResponse>({
+    queryKey: indicatorKeys.projectConfig(),
+    queryFn: async () => {
+      const { projectConfigService } = await import("@/service/project-config");
+      return projectConfigService.getProjectConfig({ configTypes: "project-type,design-phases" });
+    },
+    staleTime: TIME_CONSTANTS.THIRTY_MINUTES,
+    gcTime: TIME_CONSTANTS.ONE_HOUR
   });
 }

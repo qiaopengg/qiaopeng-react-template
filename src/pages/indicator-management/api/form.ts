@@ -1,4 +1,10 @@
-import type { IIndicatorAddParams, IIndicatorEditParams, IIndicatorItem, IIndicatorQueryParams } from "../types";
+import type {
+  IIndicatorAddParams,
+  IIndicatorEditParams,
+  IIndicatorItem,
+  IIndicatorPageResponse,
+  IIndicatorQueryParams
+} from "../types";
 import { useQueryClient } from "@qiaopeng/tanstack-query-plus";
 import { useMutation } from "@qiaopeng/tanstack-query-plus/hooks";
 import { createOptimisticBase, createTempId } from "@qiaopeng/tanstack-query-plus/utils";
@@ -30,8 +36,8 @@ export function useAddMutation(params?: IIndicatorQueryParams) {
     mutationFn: createIndicator,
     optimistic: {
       queryKey: indicatorKeys.list(queryParams),
-      updater: <TQueryData = any>(oldData: TQueryData | undefined, newItem: IIndicatorAddParams) => {
-        const typedOldData = oldData as { Rows: IIndicatorItem[]; Total: number } | undefined;
+      updater: <TQueryData = IIndicatorPageResponse>(oldData: TQueryData | undefined, newItem: IIndicatorAddParams) => {
+        const typedOldData = oldData as unknown as IIndicatorPageResponse | undefined;
         if (!typedOldData) return oldData;
 
         // 乐观更新：创建临时项
@@ -44,7 +50,7 @@ export function useAddMutation(params?: IIndicatorQueryParams) {
           ...typedOldData,
           Rows: [optimisticItem, ...(typedOldData.Rows || [])],
           Total: (typedOldData.Total || 0) + 1
-        } as TQueryData;
+        } as unknown as TQueryData;
       },
       enabled: true,
       rollback: (_previousData, error) => {
@@ -64,8 +70,11 @@ export function useUpdateMutation(params?: IIndicatorQueryParams) {
     mutationFn: updateIndicator,
     optimistic: {
       queryKey: indicatorKeys.list(queryParams),
-      updater: <TQueryData = any>(oldData: TQueryData | undefined, updatedItem: IIndicatorEditParams) => {
-        const typedOldData = oldData as { Rows: IIndicatorItem[]; Total: number } | undefined;
+      updater: <TQueryData = IIndicatorPageResponse>(
+        oldData: TQueryData | undefined,
+        updatedItem: IIndicatorEditParams
+      ) => {
+        const typedOldData = oldData as unknown as IIndicatorPageResponse | undefined;
         if (!typedOldData) return oldData;
         return {
           ...typedOldData,
@@ -78,7 +87,7 @@ export function useUpdateMutation(params?: IIndicatorQueryParams) {
                 }
               : item
           )
-        } as TQueryData;
+        } as unknown as TQueryData;
       },
       enabled: true,
       rollback: (_previousData, error) => {
